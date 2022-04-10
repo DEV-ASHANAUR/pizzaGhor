@@ -1,0 +1,75 @@
+.productPrice{
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 32px;
+    font-family: "Oswald", sans-serif;
+    margin: 0 0 20px;
+}
+.sizeBtn{
+    background-color: #e9dcdc;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: .3s;
+    font-size: 13px;
+    text-transform: capitalize;
+    padding: 5px 8px;
+    border: none;
+}
+.sizeBtn.active{
+    background-color: #ED4E53;
+    color : #e9dcdc;
+    pointer-events: none;
+}
+.sizeBtn:hover{
+    color: #ED4E53;
+}
+.checkboxWrapper{
+    display:flex;
+    align-items: center;
+}
+.checkbox{
+    height:20px;
+    width: 20px;
+    margin-right: 5px;
+}
+.counter{
+    display: flex;
+    align-items: center;
+    width: 37%;
+}
+.qty{
+    border: 1px solid #ddd;
+    padding: 10px 13px;
+}
+.plus{
+    padding: 10px 15px;
+    background: #ddd;
+    border-radius: 0 25px 25px 0;
+    border: none;
+}
+.plus:focus{
+    color:green;
+}
+.minus{
+    padding: 10px 15px;
+    background: #ddd;
+    border-radius: 25px 0 0 25px;
+    border: none;
+}
+.minus:focus{
+    color: red;
+}
+.addToCartBtn{
+    padding: 9px 20px;
+    background-color: #d1411e;
+    border: none;
+    color: #fff;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    text-transform: capitalize;
+}
+.addToCartBtn:focus{
+    background-color: #dd5634;
+}

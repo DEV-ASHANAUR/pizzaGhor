@@ -1,0 +1,23 @@
+.footer{
+    background: #191919;
+}
+.customListItem li{
+    list-style: none;
+    padding: 5px 0;
+}
+.customListItem li a{
+    text-decoration: none;
+    color: #fff;
+}
+.lastFotArea {
+    text-align: right;
+    display: flex;
+    align-items: center;
+    list-style: none;
+    justify-content: flex-end;
+}
+.lastFotArea li a{
+    text-decoration: none;
+    color: #fff;
+    padding-left: 25px;
+}

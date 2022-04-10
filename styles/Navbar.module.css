@@ -1,0 +1,25 @@
+.navWrapper{
+  background-color: #d1411e;
+}
+.cartIconWrapper{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+.counterWrapper{
+    cursor: pointer;
+    position: relative;
+}
+.counter{
+    position: absolute;
+    top: 0;
+    right: -30%;
+    background: #fff;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    font-weight: bold;
+    align-items: center;
+    justify-content: center;
+}

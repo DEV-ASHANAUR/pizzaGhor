@@ -1,0 +1,68 @@
+.quantityUpdateBtn {
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+.quantityUpdateBtn .decrement {
+    border: none;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    color: red;
+}
+.quantityUpdateBtn .decrement:active {
+    color: rgb(173, 45, 45);
+}
+.quantityUpdateBtn .increment {
+    border: none;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    cursor: pointer;
+    color: #0003ff;
+}
+.quantityUpdateBtn .increment:active {
+    color: #7375e9;
+}
+.conBtn{
+    background-color: yellowgreen;
+    border:none;
+    padding:10px 15px;
+    color:#fff;
+    text-transform:uppercase;
+    font-size: 12px;
+    border-radius:5px;
+}
+.conBtn:focus{
+    background-color: rgb(136, 172, 63);
+}
+.cartDeltailsBox{
+    background: #500707;
+    padding: 10px 15px;
+    color: #fff;
+    border-radius: 3px;
+    text-transform: uppercase;
+    margin: 15px 0;
+}
+.checkoutBtn{
+    width:100%;
+    display:block;
+    border:none;
+    padding:10px 15px;
+    text-transform:uppercase;
+    font-size: 12px;
+    background-color: #d1411e;
+    color:#fff;
+    border-radius:3px;
+    margin:15px 0;
+}
+.checkoutBtn:focus{
+    background-color: #ac3719;
+}
