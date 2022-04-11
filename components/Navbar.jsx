@@ -2,7 +2,9 @@ import {useEffect,useRef} from 'react';
 import styles from '../styles/Navbar.module.css';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useSelector, useDispatch } from 'react-redux';
 const Navbar = () => {
+    const {cartItems} = useSelector(state=>state.cart)
     const headerScroll = useRef();
     useEffect(()=>{
         scrollEffect();
@@ -43,8 +45,12 @@ const Navbar = () => {
                             </ul>
                             <div className={styles.cartIconWrapper}>
                                 <div className={styles.counterWrapper}>
-                                    <Image src="/img/cart.png" width="30" height="30" />
-                                    <small className={styles.counter}>2</small>
+                                    <Link href="/cart" passHref>
+                                        <a>
+                                        <Image src="/img/cart.png" width="30" height="30" />
+                                        <small className={styles.counter}>{cartItems.length}</small>
+                                        </a>
+                                    </Link>
                                 </div>
                             </div>
                         </div>

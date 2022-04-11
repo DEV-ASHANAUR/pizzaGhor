@@ -1,7 +1,9 @@
 import Layouts from '../components/Layouts'
 import '../styles/globals.css'
 import Head from 'next/head';
-
+import { store } from '../redux/store'
+import { Provider } from 'react-redux'
+import 'react-toastify/dist/ReactToastify.css';
 
 function MyApp({ Component, pageProps }) {
   return (
@@ -15,9 +17,11 @@ function MyApp({ Component, pageProps }) {
 
         <script src="https://kit.fontawesome.com/dce6f93502.js" crossorigin="anonymous"></script>
       </Head>
-      <Layouts>
-        <Component {...pageProps} />
-      </Layouts>
+      <Provider store={store}>
+        <Layouts>
+          <Component {...pageProps} />
+        </Layouts>
+      </Provider>
     </>
   )
 }

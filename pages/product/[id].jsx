@@ -5,11 +5,15 @@ import styles from '../../styles/Product.module.css'
 import RemoveIcon from '@mui/icons-material/Remove';
 import AddIcon from '@mui/icons-material/Add';
 import ShoppingBasketIcon from '@mui/icons-material/ShoppingBasket';
+import { useSelector, useDispatch } from 'react-redux';
+import {addToCart} from '../../redux/cartSlice';
+import { ToastContainer, toast } from 'react-toastify';
 const Product = ({ pizza }) => {
     const [price,setPrice] = useState(pizza.prices[0])
     const [size, setSize] = useState(0);
     const [qty, setQty] = useState(1);
     const [extras,setExtras] = useState([]);
+    const dispatch = useDispatch();
     //handlePrice
     const handlePrice = (number) =>{
         setPrice(price + number);
@@ -31,10 +35,14 @@ const Product = ({ pizza }) => {
             setExtras(extras.filter((extra)=>extra._id !== option._id));
         }
     }
-    console.log(extras);
+    // console.log(extras);
+    const handleAddToCart = () =>{
+        dispatch(addToCart({...pizza,extras,price,qty}));
+    }
 
     return (
         <div className='container pb-5'>
+        <ToastContainer />
             <h5 className="pt-2 pb-3">Home/Product</h5>
             <div className="row">
                 <div className="col-md-6 d-flex justify-content-center align-items-center">
@@ -69,7 +77,7 @@ const Product = ({ pizza }) => {
                             <button className={styles.plus} onClick={() => { (qty < 9) && setQty(qty + 1) }}><AddIcon /></button>
                         </div>
                         <div className="orderBtn">
-                            <button className={styles.addToCartBtn}>ADD TO CART  <ShoppingBasketIcon /> </button>
+                            <button className={styles.addToCartBtn} onClick={handleAddToCart}>ADD TO CART  <ShoppingBasketIcon /> </button>
                         </div>
                     </div>
                 </div>

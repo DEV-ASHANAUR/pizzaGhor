@@ -4,9 +4,18 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import BackspaceRoundedIcon from '@mui/icons-material/BackspaceRounded';
 import Image from 'next/image';
 import styles from '../styles/Cart.module.css'
+import { useSelector, useDispatch } from 'react-redux';
+import {increment,decrement,remove} from '../redux/cartSlice';
+import { ToastContainer, toast } from 'react-toastify';
+import Link from 'next/link';
 const cart = () => {
+    const dispatch = useDispatch();
+    const {cartItems,total,quantity} = useSelector(state=>state.cart)
+    // console.log(total);
+    // console.log(quantity)
     return (
         <div className='container'>
+        <ToastContainer />
             <h5 className="pt-2 pb-3">Home/Product/Cart</h5>
             <div className="row">
                 <div className="col-md-9">
@@ -16,60 +25,55 @@ const cart = () => {
                                 <tr>
                                     <th>Thumbnail</th>
                                     <th>Title</th>
-                                    <th>Price</th>
+                                    <th>Extra</th>
+                                    <th>Unit Price</th>
                                     <th>Quantity</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
+                                {cartItems.map((item,index)=>(
+                                    <tr key={index}>
                                     <td>
-                                        <Image src="/img/pizza.png" width='60' height="60"
+                                        <Image src={item.img} width='60' height="60"
                                             objectFit="cover"
                                             alt="" />
                                     </td>
-                                    <td>fhjgh</td>
-                                    <td>554</td>
+                                    <td>{item.title}</td>
+                                    <td>
+                                        {
+                                            item.extras.map(extra=>(
+                                                <span className='badge rounded-pill bg-primary' key={extra._id}>{extra.text}</span>
+                                            ))
+                                        }
+                                    </td>
+                                    <td>{item.price}$</td>
                                     <td>
                                         <div className={styles.quantityUpdateBtn}>
-                                            <button className={styles.decrement}><RemoveIcon /></button>
-                                            <span>1</span>
-                                            <button className={styles.increment}><AddIcon /></button>
+                                            <button className={styles.decrement} onClick={()=>dispatch(decrement({index}))}><RemoveIcon /></button>
+                                            <span>{item.qty}</span>
+                                            <button className={styles.increment} onClick={()=>dispatch(increment({index}))}><AddIcon /></button>
                                         </div>
                                     </td>
-                                    <td style={{ color: 'red', cursor: 'pointer' }}><BackspaceRoundedIcon /></td>
+                                    <td style={{ color: 'red', cursor: 'pointer' }}><BackspaceRoundedIcon onClick={()=>dispatch(remove({index}))} /></td>
                                 </tr>
-
-                                <tr>
-                                    <td>
-                                        <Image src="/img/pizza.png" width='60' height="60"
-                                            objectFit="cover"
-                                            alt="" />
-                                    </td>
-                                    <td>fhjgh</td>
-                                    <td>554</td>
-                                    <td>
-                                        <div className={styles.quantityUpdateBtn}>
-                                            <button className={styles.decrement}><RemoveIcon /></button>
-                                            <span>1</span>
-                                            <button className={styles.increment}><AddIcon /></button>
-                                        </div>
-                                    </td>
-                                    <td style={{ color: 'red', cursor: 'pointer' }}><BackspaceRoundedIcon /></td>
-                                </tr>
+                                ))}
                             </tbody>
                         </table>
                         <div className="my-3">
-                            <button className={styles.conBtn}>continue shopping</button>
+                            <Link href="/" passHref>
+                                <button className={styles.conBtn}>continue shopping</button>
+                            </Link>
+                            
                         </div>
                     </div>
                 </div>
                 <div className="col-md-3">
                     <div className={styles.cartDeltailsBox}>
                         <h4 className="mb-3">CART TOTAL</h4>
-                        <h6>cart total : 7485 </h6>
-                        <h6>discount : 7485 </h6>
-                        <h6 className="mb-3">total : 7485 </h6>
+                        <h6>cart total : {total}$ </h6>
+                        <h6>discount : 0 </h6>
+                        <h6 className="mb-3">total : {total}$ </h6>
                         <button className={styles.checkoutBtn}>checkout now</button>
                     </div>
                 </div>
