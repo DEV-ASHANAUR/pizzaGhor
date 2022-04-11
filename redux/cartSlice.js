@@ -7,6 +7,9 @@ import { toast } from "react-toastify";
 //    getCart = JSON.parse(localStorage.getItem('cartItems'));
 // }
 
+// const data = typeof window !== "undefined" && localStorage.getItem("cart") ? 
+//  JSON.parse(localStorage.getItem("cart")) : []
+
 const initialState = {
     cartItems: [],
     quantity: 0,
@@ -25,6 +28,7 @@ export const cartSlice = createSlice({
                 state.quantity += item.qty;
                 state.total += item.qty * item.price;
             })
+            localStorage.setItem('cart',JSON.stringify(state.cartItems));
             toast.success('Product added to cart!', {
                 position: "bottom-right",
             });
