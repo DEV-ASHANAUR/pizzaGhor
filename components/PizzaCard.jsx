@@ -13,7 +13,7 @@ const PizzaCard = ({pizza}) => {
                         <h5 className={styles.cardPrice}>{pizza.prices[0]}$</h5>
                     </div>
                     <p className={styles.cardTitle}>{pizza.desc}</p>
-                    <Link href={`/product/${pizza._id}`}>
+                    <Link href={`/product/${pizza._id}`} passHref>
                         <button className={styles.buyBtn}>
                             Order Now
                         </button>

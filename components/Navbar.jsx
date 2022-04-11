@@ -30,7 +30,7 @@ const Navbar = () => {
                         <div className="collapse navbar-collapse" id="navbarSupportedContent">
                             <ul className="navbar-nav m-auto mb-2 mb-lg-0 text-center text-uppercase">
                                 <li className="nav-item">
-                                    <Link href="/">
+                                    <Link href="/" passHref>
                                         <a className="nav-link active" aria-current="page">Home</a>
                                     </Link>
                                 </li>
