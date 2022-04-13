@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
@@ -5,9 +6,10 @@ import BackspaceRoundedIcon from '@mui/icons-material/BackspaceRounded';
 import Image from 'next/image';
 import styles from '../styles/Cart.module.css'
 import { useSelector, useDispatch } from 'react-redux';
-import { increment, decrement, remove } from '../redux/cartSlice';
+import { increment, decrement, remove,reset } from '../redux/cartSlice';
 import { ToastContainer, toast } from 'react-toastify';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import {
     PayPalScriptProvider,
     PayPalButtons,
@@ -15,12 +17,57 @@ import {
 } from "@paypal/react-paypal-js";
 
 const cart = () => {
+    const [user, setUser] = useState(null);
+    const [status, setStatus] = useState('');
+    const [loading, setLoading] = useState(false);
     const [open, setOpen] = useState(false);
     const dispatch = useDispatch();
-    const { cartItems, total } = useSelector(state => state.cart)
+    const { cartItems, total, quantity } = useSelector(state => state.cart)
+    const router = useRouter();
+    // console.log("cartItems", cartItems);
+    useEffect(()=>{
+        setLoading(true);
+        handleUser();
+        setLoading(false);
+    },[])
+    //get login user
+    const handleUser = async () => {
+        const res = await axios.get('http://localhost:3000/api/user');
+        if (res.data.success === true) {
+            setStatus(200);
+            setUser(res.data.user);
+        } else {
+            setStatus('');
+        }
+    }
 
+    //loading
+    if(loading){
+        return <h1>Loading</h1>
+    }
+    //make order 
+    console.log("cartTotal", total);
+    console.log("cartquantity", quantity);
+    const makeOrder = async (data) => {
+        try {
+            const res = await axios.post('http://localhost:3000/api/order', {
+                customerId: user?._id,
+                customer: data.customer,
+                method:data.method,
+                address:data.address,
+                item: cartItems,
+                total: total,
+                quantity: quantity
+            });
+            dispatch(reset());
+            toast.success('Your Order Pleced Successfully!');
+            router.push(`/dashboard/user/orders/${res.data._id}`);
+        } catch (error) {
+            console.log(error);
+        }
+    }
     //for paypal
-    const amount = "2";
+    const amount = total;
     const currency = "USD";
     const style = { "layout": "vertical" };
     const ButtonWrapper = ({ currency, showSpinner }) => {
@@ -64,8 +111,14 @@ const cart = () => {
                         });
                 }}
                 onApprove={function (data, actions) {
-                    return actions.order.capture().then(function () {
-                        // Your code here after capture the order
+                    return actions.order.capture().then(function (details) {
+                        const shipping = details.purchase_units[0].shipping;
+                        makeOrder({
+                            customer: user?.name,
+                            address: shipping.address.address_line_1,
+                            total: cart.total,
+                            method: 1,
+                        });
                     });
                 }}
             />
@@ -77,6 +130,7 @@ const cart = () => {
         <div className='container'>
             <ToastContainer />
             <h5 className="pt-2 pb-3">Home/Product/Cart</h5>
+            {/* <button onClick={makeOrder}>make order</button> */}
             <div className="row">
                 <div className="col-md-9">
                     <div className="table-responsive">
@@ -138,7 +192,7 @@ const cart = () => {
                         {
                             open ? (
                                 <div>
-                                    <button className={styles.checkoutBtn} onClick={() => setOpen(true)}>Cash on Delivery</button>
+                                    <button className={styles.checkoutBtn}>Cash on Delivery</button>
                                     <PayPalScriptProvider
                                         options={{
                                             "client-id": "ATXDS4PbGYOHGQMmtE_FS-npcfIRC9OmrRDWxNOFlhzE-NtrH8bwGvmBMplRqsP64rpvcgFGZgDUVghq",
@@ -153,9 +207,13 @@ const cart = () => {
                                         />
                                     </PayPalScriptProvider>
                                 </div>
-                            ) : (
-                                <button className={styles.checkoutBtn} onClick={() => setOpen(true)}>checkout now</button>
-                            )
+                            ) : 
+                                
+                                (status == 200 && user && user.role === 'user') ? (
+                                    <button className={styles.checkoutBtn} onClick={() => setOpen(true)}>checkout now</button>
+                                ):(
+                                    <button className={styles.checkoutBtn}>Please Login As User for checkout</button>
+                                )  
                         }
                     </div>
                 </div>

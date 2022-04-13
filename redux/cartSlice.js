@@ -71,10 +71,10 @@ export const cartSlice = createSlice({
             });
         },
 
-        reset: () => {
-            cartItems = []
-            quantity = 0
-            total = 0
+        reset: (state) => {
+            state.cartItems = []
+            state.quantity = 0
+            state.total = 0
         },
 
     }

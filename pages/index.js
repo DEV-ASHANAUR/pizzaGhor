@@ -7,6 +7,7 @@ import PizzaList from '../components/PizzaList'
 import styles from '../styles/Home.module.css'
 
 export default function Home({pizzaList}) {
+
   return (
     <div className={styles.container}>
       <Head>
@@ -22,11 +23,11 @@ export default function Home({pizzaList}) {
 }
 
 export const getServerSideProps = async()=>{
-  const res = await axios.get('http://localhost:3000/api/product');
 
+    const res = await axios.get('http://localhost:3000/api/product');
   return{
     props:{
-      pizzaList : res.data
+      pizzaList : res.data,
     }
   }
 }
