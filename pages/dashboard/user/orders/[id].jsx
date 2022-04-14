@@ -34,6 +34,42 @@ const Order = ({order}) => {
                                 </tr>
                             </tbody>
                         </table>
+                        <h5>Order Details</h5>
+                        <table className='table text-center'>
+                            <thead>
+                                <tr>
+                                    <th>Thumbnail</th>
+                                    <th>Title</th>
+                                    <th>Extra</th>
+                                    <th>Unit Price</th>
+                                    <th>Quantity</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {order.item.map((item, index) => (
+                                    <tr key={index}>
+                                        <td>
+                                            <Image src={item.img} width='60' height="60"
+                                                objectFit="cover"
+                                                alt="" />
+                                        </td>
+                                        <td>{item.title}</td>
+                                        <td>
+                                            {
+                                                item.extras.map(extra => (
+                                                    <span className='badge rounded-pill bg-primary px-2' key={extra._id}>{extra.text}</span>
+                                                ))
+                                            }
+                                        </td>
+                                        <td>{item.price}$</td>
+                                        <td>{item.qty}</td>
+                                        
+                                    </tr>
+                                ))}
+                                
+                            </tbody>
+                        </table>
+                        <h6>Order Status</h6>
                         <div className={`my-5 d-flex justify-content-between ${styles.statusArea}`}>
                             <div className={statusClass(0)}>
                                 <Image src="/img/paid.png" width={30} height={30} alt="" />
@@ -88,6 +124,7 @@ const Order = ({order}) => {
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
                 <div class="col-md-3">
