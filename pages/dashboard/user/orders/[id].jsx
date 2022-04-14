@@ -1,8 +1,10 @@
+import axios from 'axios';
 import React from 'react'
 import styles from '../../../../styles/Order.module.css'
 import Image from 'next/image';
-const Order = () => {
-    const status = 0;
+const Order = ({order}) => {
+    console.log(order)
+    const status = order.status;
     const statusClass = (index) =>{
         if (index - status < 1) return styles.done;
         if (index - status === 1) return styles.inProgress;
@@ -10,7 +12,7 @@ const Order = () => {
     }
     return (
         <div className="container">
-            <h5 className="pt-2 pb-3">Home/order</h5>
+            <h5 className="pt-2 pb-3">Dashboard/User/Track order</h5>
             <div className='row'>
                 <div class="col-md-9">
                     <div className="table-responsive">
@@ -25,10 +27,10 @@ const Order = () => {
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>65483523543331</td>
-                                    <td>Md Ashanaur Rahman</td>
-                                    <td>dhaka,Bangladesh</td>
-                                    <td>7845$</td>
+                                    <td>{order._id}</td>
+                                    <td>{order.customer}</td>
+                                    <td>{order.address}</td>
+                                    <td>{order.total}$</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -91,15 +93,23 @@ const Order = () => {
                 <div class="col-md-3">
                     <div className={styles.orderDeltailsBox}>
                         <h4 className="mb-3">CART TOTAL</h4>
-                        <h6>cart total : 7485 </h6>
-                        <h6>discount : 7485 </h6>
-                        <h6 className="mb-3">total : 7485 </h6>
-                        <button className={styles.checkoutBtn}>paid</button>
+                        <h6>cart total : {order.total}$ </h6>
+                        <h6>discount : 0 </h6>
+                        <h6 className="mb-3">total : {order.total}$ </h6>
+                        <button className={styles.checkoutBtn}>{(order.method === 1)?'paid':'cash on devlivery'}</button>
                     </div>
                 </div>
             </div>
         </div>
     )
+}
+export const getServerSideProps = async ({ params }) => {
+    const res = await axios.get(`http://localhost:3000/api/order/${params.id}`);
+    return {
+        props: {
+            order: res.data
+        }
+    }
 }
 
 export default Order

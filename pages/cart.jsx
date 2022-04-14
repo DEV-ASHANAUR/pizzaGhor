@@ -8,6 +8,7 @@ import styles from '../styles/Cart.module.css'
 import { useSelector, useDispatch } from 'react-redux';
 import { increment, decrement, remove,reset } from '../redux/cartSlice';
 import { ToastContainer, toast } from 'react-toastify';
+import BillingModal from '../components/BillingModal';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import {
@@ -17,10 +18,12 @@ import {
 } from "@paypal/react-paypal-js";
 
 const cart = () => {
+    const [lgShow, setLgShow] = useState(false);
     const [user, setUser] = useState(null);
+    const [paymentSetp,setPaymentStep] = useState(false);
     const [status, setStatus] = useState('');
     const [loading, setLoading] = useState(false);
-    const [open, setOpen] = useState(false);
+    const [billing,setBilling] = useState(null);
     const dispatch = useDispatch();
     const { cartItems, total, quantity } = useSelector(state => state.cart)
     const router = useRouter();
@@ -40,22 +43,22 @@ const cart = () => {
             setStatus('');
         }
     }
-    
-    const handleCheckout = ()=>{
-        if(cartItems.length > 0){
-            setOpen(true);
-        }else{
-            toast('Please Add some Product First!');
-        }
+    //handleModalShow
+    const handleModalShow = ()=> {
+        setLgShow(false);
     }
-
+    //requestForPayment
+    const requestForPayment = (billingData) => {
+        setBilling(billingData);
+        setPaymentStep(true);
+        setLgShow(false);
+        toast.success("choose Your Payment Option!");
+    }
     //loading
     if(loading){
         return <h1>Loading</h1>
     }
     //make order 
-    // console.log("cartTotal", total);
-    // console.log("cartquantity", quantity);
     const makeOrder = async (data) => {
         try {
             const res = await axios.post('http://localhost:3000/api/order', {
@@ -123,8 +126,7 @@ const cart = () => {
                         const shipping = details.purchase_units[0].shipping;
                         makeOrder({
                             customer: user?.name,
-                            address: shipping.address.address_line_1,
-                            total: cart.total,
+                            address: billing.address,
                             method: 1,
                         });
                     });
@@ -138,7 +140,7 @@ const cart = () => {
         <div className='container'>
             <ToastContainer />
             <h5 className="pt-2 pb-3">Home/Product/Cart</h5>
-            {/* <button onClick={makeOrder}>make order</button> */}
+            {/* <button onClick={()=>setLgShow(true)}>make order</button> */}
             <div className="row">
                 <div className="col-md-9">
                     <div className="table-responsive">
@@ -203,11 +205,10 @@ const cart = () => {
                         <h6>cart total : {total}$ </h6>
                         <h6>discount : 0 </h6>
                         <h6 className="mb-3">total : {total}$ </h6>
-
                         {
-                            (status == 200 && user && user.role === 'user' && cartItems.length) ? (
+                            paymentSetp && (
                                 <div>
-                                    <button className={styles.checkoutBtn}>Cash on Delivery</button>
+                                    <button className={styles.checkoutBtn} onClick={()=>makeOrder({customer: user?.name,address: billing.address, method: 0,})}>Cash on Delivery</button>
                                     <PayPalScriptProvider
                                         options={{
                                             "client-id": "ATXDS4PbGYOHGQMmtE_FS-npcfIRC9OmrRDWxNOFlhzE-NtrH8bwGvmBMplRqsP64rpvcgFGZgDUVghq",
@@ -222,16 +223,34 @@ const cart = () => {
                                         />
                                     </PayPalScriptProvider>
                                 </div>
+                            )
+                        }
+
+                        { 
+                            !paymentSetp && (
+                            <>
+                                {
+                                    (status == 200 && user && user?.role === 'user' && cartItems.length) ? (
+                                <div>
+                                    <button className={styles.checkoutBtn} onClick={()=>setLgShow(true)}>Checkout</button>
+                                </div>
                             ) : 
-                                
                                 (status == 200 && user && user.role === 'user') ? (
                                     <button className={styles.checkoutBtn}>shop first</button>
                                 ):(
                                     <Link href="/login" passHref>
                                         <button className={styles.checkoutBtn}>Please Login As User for checkout</button>
                                     </Link>
-                                )  
+                                ) 
+                                }
+                            </>
+                            )
                         }
+
+                        {
+                            lgShow && <BillingModal lgShow={lgShow} handleModalShow={handleModalShow} user={user} requestForPayment={requestForPayment} />
+                        }
+                        
                     </div>
                 </div>
             </div>
