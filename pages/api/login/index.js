@@ -29,6 +29,7 @@ export default async function handler(req, res) {
                         "Set-Cookie",
                         cookie.serialize("token", token, {
                           maxAge: 60 * 60,
+                          httpOnly:true,
                           sameSite: "strict",
                           path: "/",
                         })

@@ -34,6 +34,7 @@ const Navbar = () => {
         await axios.get('http://localhost:3000/api/logout');
         setUser(null);
         setStatus('');
+        router.push('/');
     }
 
     const { cartItems } = useSelector(state => state.cart)

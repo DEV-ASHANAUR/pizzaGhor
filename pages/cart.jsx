@@ -29,7 +29,7 @@ const cart = () => {
         setLoading(true);
         handleUser();
         setLoading(false);
-    },[])
+    },[router.pathname])
     //get login user
     const handleUser = async () => {
         const res = await axios.get('http://localhost:3000/api/user');
@@ -40,14 +40,22 @@ const cart = () => {
             setStatus('');
         }
     }
+    
+    const handleCheckout = ()=>{
+        if(cartItems.length > 0){
+            setOpen(true);
+        }else{
+            toast('Please Add some Product First!');
+        }
+    }
 
     //loading
     if(loading){
         return <h1>Loading</h1>
     }
     //make order 
-    console.log("cartTotal", total);
-    console.log("cartquantity", quantity);
+    // console.log("cartTotal", total);
+    // console.log("cartquantity", quantity);
     const makeOrder = async (data) => {
         try {
             const res = await axios.post('http://localhost:3000/api/order', {
@@ -172,6 +180,13 @@ const cart = () => {
                                         <td style={{ color: 'red', cursor: 'pointer' }}><BackspaceRoundedIcon onClick={() => dispatch(remove({ index }))} /></td>
                                     </tr>
                                 ))}
+                                {
+                                    cartItems.length === 0 && (
+                                        <tr>
+                                            <td colspan="6">Yout Cart is Empty!</td>
+                                        </tr>
+                                    )
+                                }
                             </tbody>
                         </table>
                         <div className="my-3">
@@ -190,7 +205,7 @@ const cart = () => {
                         <h6 className="mb-3">total : {total}$ </h6>
 
                         {
-                            open ? (
+                            (status == 200 && user && user.role === 'user' && cartItems.length) ? (
                                 <div>
                                     <button className={styles.checkoutBtn}>Cash on Delivery</button>
                                     <PayPalScriptProvider
@@ -210,9 +225,11 @@ const cart = () => {
                             ) : 
                                 
                                 (status == 200 && user && user.role === 'user') ? (
-                                    <button className={styles.checkoutBtn} onClick={() => setOpen(true)}>checkout now</button>
+                                    <button className={styles.checkoutBtn}>shop first</button>
                                 ):(
-                                    <button className={styles.checkoutBtn}>Please Login As User for checkout</button>
+                                    <Link href="/login" passHref>
+                                        <button className={styles.checkoutBtn}>Please Login As User for checkout</button>
+                                    </Link>
                                 )  
                         }
                     </div>

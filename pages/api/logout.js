@@ -1,4 +1,5 @@
 import cookie from "cookie";
+
 export default async function (req, res) {
     
     res.setHeader(
@@ -8,7 +9,8 @@ export default async function (req, res) {
             path: "/",
         })
     );
-    // res.writeHead(302, { Location: '/' });
+
+    // res.writeHead(302, { Location: 'http://localhost:3000/'});
     res.end();
     
 }
