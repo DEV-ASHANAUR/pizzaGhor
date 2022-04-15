@@ -4,10 +4,17 @@ import Head from 'next/head';
 import { store } from '../redux/store'
 import { Provider } from 'react-redux'
 import 'react-toastify/dist/ReactToastify.css';
+import "../styles/nprogress.css";
+import nProgress from "nprogress";
+import Router from "next/router";
 
 import { PersistGate } from 'redux-persist/integration/react';
 import { persistStore } from 'redux-persist';
 let persistor = persistStore(store);
+
+Router.events.on("routeChangeStart", nProgress.start);
+Router.events.on("routeChangeError", nProgress.done);
+Router.events.on("routeChangeComplete", nProgress.done);
 
 function MyApp({ Component, pageProps }) {
   return (

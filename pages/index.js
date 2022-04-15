@@ -1,13 +1,12 @@
 import axios from "axios";
 import Head from 'next/head'
 import Image from 'next/image'
-import  Featured  from '../components/Featured'
+import Featured from '../components/Featured'
 import NewsLetter from '../components/NewsLetter'
 import PizzaList from '../components/PizzaList'
 import styles from '../styles/Home.module.css'
 
-export default function Home({pizzaList}) {
-
+export default function Home({ pizzaList }) {
   return (
     <div className={styles.container}>
       <Head>
@@ -22,12 +21,11 @@ export default function Home({pizzaList}) {
   )
 }
 
-export const getServerSideProps = async()=>{
-
-    const res = await axios.get('http://localhost:3000/api/product');
-  return{
-    props:{
-      pizzaList : res.data,
+export const getServerSideProps = async () => {
+  const res = await axios.get('http://localhost:3000/api/product');
+  return {
+    props: {
+      pizzaList: res.data,
     }
   }
 }
