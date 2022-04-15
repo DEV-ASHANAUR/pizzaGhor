@@ -86,11 +86,16 @@ const Navbar = () => {
                                             </li>
                                             </>
                                         ) : (
-                                            <li className="nav-item">
+                                            <>
+                                                <li className="nav-item">
                                                 <Link href="/dashboard/admin/" passHref>
                                                     <a className="nav-link active" aria-current="page" >dashboard</a>
                                                 </Link>
                                             </li>
+                                            <li className="nav-item">
+                                                <button className="btn btn-danger" onClick={handleLogout}>logout</button>
+                                            </li>
+                                            </>
                                         )
 
                                     ) : (

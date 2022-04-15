@@ -44,7 +44,7 @@
     z-index: 1031;
     top: 50%;
     right: 50%;
-    transform: translate( -50%, -50% );
+    transform: translate( 50%, 50% );
   }
   
   #nprogress .spinner-icon {

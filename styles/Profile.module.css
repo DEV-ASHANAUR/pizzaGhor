@@ -1,0 +1,8 @@
+.stepBtn{
+	border: none;
+    background: #0ab3e5;
+    padding: 3px 16px;
+    /*cursor: pointer;*/
+    border-radius: 5px;
+    color: #fff;
+   }

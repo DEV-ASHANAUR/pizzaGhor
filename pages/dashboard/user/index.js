@@ -3,6 +3,8 @@ import React,{useEffect,useState} from 'react'
 import BackspaceRoundedIcon from '@mui/icons-material/BackspaceRounded';
 import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import Link from 'next/Link';
+import Image from 'next/image';
+import styles from '../../../styles/Profile.module.css';
 
 const index = () => {
     const [user, setUser] = useState(null);
@@ -54,6 +56,9 @@ const index = () => {
                 <div className='col-md-3'>
                     <div className='text-center bg-primary text-white p-4'>
                         <h5 className="text-center pb-3">My Account</h5>
+                        <div className={styles.profileWrapper}>
+                            <Image src="/img/person.jpg" width="150px" height="150px" className='img-fluid rounded-circle' />
+                        </div>
                         <p>{user?.name}</p>
                         <p>{user?.email}</p>
                     </div>
